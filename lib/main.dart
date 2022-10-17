@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noteapp/screens/home.dart';
-import 'package:noteapp/style/app.dart';
+
+import 'package:noteapp/ui/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());

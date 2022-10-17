@@ -23,6 +23,23 @@ AppBar theAppBar(String title) {
       backgroundColor: lightColor);
 }
 
+FloatingActionButton theFAB() {
+  return FloatingActionButton(
+    child: Container(
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[lightestMainColor, lighterMainColor, mainColor],
+                tileMode: TileMode.mirror)),
+        child: Icon(Icons.add, size: 40, color: lightColor)),
+    onPressed: () {},
+  );
+}
+
 Icon drawerIcon(IconData icon) {
   return Icon(icon, size: 40, color: darkColor);
 }
