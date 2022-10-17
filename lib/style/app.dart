@@ -18,7 +18,7 @@ AppBar theAppBar(String title) {
               onPressed: () => Scaffold.of(context).openDrawer())),
       title: Text(title,
           style: const TextStyle(
-              fontFamily: "Montserrat", fontSize: 28, color: Colors.black)),
+              fontFamily: "Poppins", fontSize: 28, color: Colors.black)),
       elevation: 0.0,
       backgroundColor: lightColor);
 }
@@ -29,6 +29,5 @@ Icon drawerIcon(IconData icon) {
 
 Text drawerTitle(String title) {
   return Text(title,
-      style:
-          TextStyle(fontFamily: "Montserrat", fontSize: 20, color: darkColor));
+      style: TextStyle(fontFamily: "Poppins", fontSize: 20, color: darkColor));
 }
