@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:noteapp/style/app.dart';
 
-import '../style/home.dart';
+import '../style/app.dart';
+import '../style/home_style.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -13,25 +13,46 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
         backgroundColor: lightColor,
         appBar: theAppBar("Reminder"),
         body: Container(
           margin: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-          height: 48.0,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              label("All"),
-              const SizedBox(width: 16.0),
-              label("Home"),
-              const SizedBox(width: 16.0),
-              label("Task"),
-              const SizedBox(width: 16.0),
-              label("Shopping"),
-              const SizedBox(width: 16.0),
-              label("➕"),
-
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  SizedBox(
+                    width: 292,
+                    child: TabBar(
+                      isScrollable: true,
+                      labelPadding:
+                          const EdgeInsets.only(left: 20.0, right: 20.0),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      //indicatorPadding: EdgeInsets.all(16.0),
+                      indicator: BoxDecoration(
+                          color: lighterMainColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(16.0))),
+                      tabs: [
+                        Tab(child: label("All")),
+                        Tab(child: label("Home")),
+                        Tab(child: label("Task")),
+                        Tab(child: label("Shopping"))
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 68.0,
+                    child: FlatButton(
+                        onPressed: () {},
+                        child: Icon(Icons.add_circle,
+                            color: lighterMainColor, size: 38)),
+                  )
+                ],
+              ),
             ],
           ),
         ),
@@ -108,6 +129,9 @@ class _HomeState extends State<Home> {
                           onTap: () {
                             Navigator.pop(context);
                           })
-                    ])))));
+                    ])))),
+        floatingActionButton: theFAB(),
+      ),
+    );
   }
 }
