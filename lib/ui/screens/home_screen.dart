@@ -53,7 +53,18 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
+              const SizedBox(
+                height: 598.9
+                ,
+                child: TabBarView(children: [
+                  Center(child: Text("All")),
+                  Center(child: Text("Home")),
+                  Center(child: Text("Task")),
+                  Center(child: Text("Shopping")),
+                ]),
+              )
             ],
+
           ),
         ),
         drawer: Drawer(
