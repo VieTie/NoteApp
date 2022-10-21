@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 
+// Label for types of note
 Container label(String title) {
   return Container(
       margin: const EdgeInsets.all(8.0),
