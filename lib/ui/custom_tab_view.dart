@@ -33,10 +33,7 @@ class _CustomTabsState extends State<CustomTabView>
   void initState() {
     _currentPosition = widget.initPosition!;
     controller = TabController(
-      length: widget.itemCount!,
-      vsync: this,
-      initialIndex: _currentPosition,
-    );
+        length: widget.itemCount!, vsync: this, initialIndex: _currentPosition);
     controller.addListener(onPositionChange);
     controller.animation!.addListener(onScroll);
     _currentCount = widget.itemCount!;
@@ -69,10 +66,9 @@ class _CustomTabsState extends State<CustomTabView>
       _currentCount = widget.itemCount!;
       setState(() {
         controller = TabController(
-          length: widget.itemCount!,
-          vsync: this,
-          initialIndex: _currentPosition,
-        );
+            length: widget.itemCount!,
+            vsync: this,
+            initialIndex: _currentPosition);
         controller.addListener(onPositionChange);
         controller.animation!.addListener(onScroll);
       });
@@ -96,24 +92,21 @@ class _CustomTabsState extends State<CustomTabView>
     if (widget.itemCount! < 1) return widget.stub ?? Container();
 
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-              alignment: Alignment.center,
-              child: TabBar(
-                  isScrollable: true,
-                  unselectedLabelColor: darkColor,
-                  labelStyle:
-                      const TextStyle(fontSize: 22.0, fontFamily: 'Montserrat'),
-                  unselectedLabelStyle:
-                      const TextStyle(fontFamily: 'OpenSans', fontSize: 20.0),
-                  indicator: BoxDecoration(
-                      color: lighterMainColor,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(16.0))),
-                  controller: controller,
-                  tabs: List.generate(widget.itemCount!,
-                      (index) => widget.tabBuilder!(context, index)))),
+          TabBar(
+              isScrollable: true,
+              unselectedLabelColor: darkColor,
+              labelStyle:
+                  const TextStyle(fontSize: 22.0, fontFamily: 'Montserrat'),
+              unselectedLabelStyle:
+                  const TextStyle(fontFamily: 'OpenSans', fontSize: 20.0),
+              indicator: BoxDecoration(
+                  color: lighterMainColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(16.0))),
+              controller: controller,
+              tabs: List.generate(widget.itemCount!,
+                  (index) => widget.tabBuilder!(context, index))),
           Expanded(
               child: TabBarView(
                   controller: controller,

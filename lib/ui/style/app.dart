@@ -14,51 +14,6 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 CollectionReference notes = FirebaseFirestore.instance.collection('Notes');
 CollectionReference types = FirebaseFirestore.instance.collection('Types');
 
-//QuerySnapshot & DocumentSnapshot
-// stream: notes.snapshots(),
-/*
-  notes.add({'data': '...',}) to add document
-  or notes.doc('docID').set({'data': '...',})
-*/
-// notes.doc('docID').update({'data': '...'})
-/*
- notes.doc('docID').delete() to delete document
- or use .update({'data': FieldValue.delete()})
-*/
-// notes.doc(documentID).get() to get data
-// notes.where('data', isGreaterThan/arrayContainsAny: ['1', '2']/...) to filter
-// notes.limit(number) to limit
-// notes.oderBy('data', descending: true/false)
-
-// .then(...)
-// .catchError((error) =>
-/*
-When a user click the "Subscribe" button, the FollowCount will increase
-use Transaction
-
-firestore.runTransaction((transaction) async {
-  DocumentSnapshot snapshot = await transaction.get(documentReference);
-  int newFollowerCount = snapshot.data()['followers'] + 1;
-  transaction.update(documentReference, {'followers': newFollowerCount});
-  return newFollowerCount;
-})
-*/
-/*
-Delete all document in a collection by Batch
-
-Future<void> batchDelete() {
-  WriteBatch batch = FirebaseFirestore.instance.batch();
-
-  return users.get().then((querySnapshot) {
-    querySnapshot.documents.forEach((document) {
-      batch.delete(document.reference);
-    });
-
-    return batch.commit();
-  });
-}
-*/
-
 // The main AppBar
 AppBar theAppBar(String title) {
   return AppBar(
