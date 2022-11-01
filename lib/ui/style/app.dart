@@ -11,7 +11,6 @@ Color lightestMainColor = const Color(0x4D0798C9);
 Color lightTextColor = const Color(0xBF1C1F20);
 const appDefaultPadding = 8.0;
 
-FirebaseFirestore firestore = FirebaseFirestore.instance;
 CollectionReference notes = FirebaseFirestore.instance.collection('Notes');
 CollectionReference types = FirebaseFirestore.instance.collection('Types');
 
@@ -62,40 +61,43 @@ Text drawerTitle(String title) {
       style: TextStyle(fontFamily: "Poppins", fontSize: 20, color: darkColor));
 }
 
-// Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {
-//   return InkWell(
-//     onTap: onTap,
-//     child: Container(
-//       padding: const EdgeInsets.all(8.0),
-//       margin: const EdgeInsets.all(8.0),
-//       decoration: BoxDecoration(
-//         color: Color(int.parse("0x$doc['type_color']")),
-//         borderRadius: BorderRadius.circular(8.0),
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             doc["note_title"],
-//             style: AppStyle.mainTitle,
-//           ),
-//           const SizedBox(
-//             height: 4.0,
-//           ),
-//           Text(
-//             doc["creation_date"],
-//             style: AppStyle.dateTitle,
-//           ),
-//           const SizedBox(
-//             height: 8.0,
-//           ),
-//           Text(
-//             doc["note_content"],
-//             style: AppStyle.mainContent,
-//             overflow: TextOverflow.ellipsis,
-//           ),
-//         ],
-//       ),
-//     ),
-//   );
-// }
+TextStyle titleStyle() {
+  return TextStyle(color: darkColor);
+}
+
+TextStyle contentStyle() {
+  return TextStyle(color: darkColor);
+}
+
+TextStyle timeStyle() {
+  return TextStyle(color: darkColor);
+}
+
+TextStyle repeatStyle() {
+  return TextStyle(color: darkColor);
+}
+
+Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {
+  return InkWell(
+      onTap: onTap,
+      child: Container(
+          padding: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+              color: Color(doc['type_color']).withOpacity(0.5),
+              borderRadius: BorderRadius.circular(8.0)),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(doc["note_title"], style: titleStyle()),
+            const SizedBox(height: 4.0),
+            Text(doc["note_description"], style: contentStyle()),
+            const SizedBox(height: 4.0),
+            Text(doc["note_location"], style: contentStyle()),
+            const SizedBox(height: 4.0),
+            Text(doc["note_repeat"], style: repeatStyle()),
+            const SizedBox(height: 4.0),
+            Text(
+                '${doc['time_start']} - ${doc['time_end']}  ${doc['note_date']}',
+                style: timeStyle()),
+          ])));
+}
