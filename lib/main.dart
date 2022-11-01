@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:noteapp/ui/screens/addnote_screen.dart';
 import 'package:noteapp/ui/screens/home_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: AddNote());
+    return const MaterialApp(home: Home());
+    // return const MaterialApp(home: AddNote());
   }
 }
