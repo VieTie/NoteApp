@@ -4,6 +4,7 @@ import 'package:noteapp/ui/custom_drawer.dart';
 
 import '../custom_tab_view.dart';
 import '../style/app.dart';
+import 'note_reader.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -41,58 +42,47 @@ class _HomeState extends State<Home> {
                           Tab(text: snapshot.data!.docs[index]['type_name']),
 
                       ///TabView
-                      pageBuilder: (context, index) =>
-                          StreamBuilder<QuerySnapshot>(
-                              stream: notes.where('note_type',
-                                  whereIn: <String>[
-                                    'Notes',
-                                    'Types'
-                                  ]).snapshots(),
-                              builder: (ctx, snapshot2) {
-                                if (snapshot2.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                }
-                                if (snapshot2.hasData) {
-                                  return GridView(
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2),
-                                    children: snapshot2.data!.docs
-                                        .map((note) => noteCard(() {
-                                              Navigator.push(
-                                                  ctx,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          NoteReader(note)));
-                                            }, note))
-                                        .toList(),
-                                  );
-                                }
-                                return Text(
-                                  "There's no Notes",
-                                  style: TextStyle(color: darkColor),
-                                );
-                              }),
+                      pageBuilder: (context, index) => StreamBuilder<
+                              QuerySnapshot>(
+                          stream: notes
+                              .where("note_type",
+                                  isEqualTo: snapshot.data!.docs[index]
+                                      ['type_name'])
+                              .snapshots(),
+                          builder: (ctx, snapshot2) {
+                            if (snapshot2.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+                            if (!snapshot2.hasData) {
+                              return Text(
+                                "There's no Notes",
+                                style:
+                                    TextStyle(color: darkColor, fontSize: 16.0),
+                              );
+                            }
+                            Color color =
+                                Color(snapshot.data!.docs[index]['type_color'])
+                                    .withOpacity(0.5);
+                            return GridView(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2),
+                              children: snapshot2.data!.docs
+                                  .map((note) => noteCard(color, () {
+                                        Navigator.push(
+                                            ctx,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NoteReader(note)));
+                                      }, note))
+                                  .toList(),
+                            );
+                          }),
                       onPositionChange: (index) {
                         initPosition = index;
                       });
                 })));
-  }
-}
-
-class NoteReader extends StatefulWidget {
-  NoteReader(this.doc, {Key? key}) : super(key: key);
-  QueryDocumentSnapshot doc;
-
-  @override
-  State<NoteReader> createState() => _NoteReaderState();
-}
-
-class _NoteReaderState extends State<NoteReader> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
   }
 }

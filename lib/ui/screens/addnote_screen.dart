@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:noteapp/ui/style/addNote_style.dart';
 import 'package:noteapp/ui/style/app.dart';
-import 'package:noteapp/ui/style/home_style.dart';
+// import 'package:noteapp/ui/style/home_style.dart';
 
 class AddNote extends StatefulWidget {
   const AddNote({Key? key}) : super(key: key);
