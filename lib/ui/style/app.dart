@@ -46,7 +46,7 @@ FloatingActionButton theFAB() {
                     mainColor
                   ],
                   tileMode: TileMode.mirror)),
-          child: Icon(Icons.add, size: 40, color: lightColor)),
+          child: const Icon(Icons.add, size: 40, color: lightColor)),
       onPressed: () {});
 }
 
@@ -62,42 +62,59 @@ Text drawerTitle(String title) {
 }
 
 TextStyle titleStyle() {
-  return TextStyle(color: darkColor);
+  return TextStyle(color: darkColor, fontSize: 16.0, fontFamily: "Montserrat");
 }
 
 TextStyle contentStyle() {
-  return TextStyle(color: darkColor);
+  return TextStyle(color: darkColor, fontSize: 14.0, fontFamily: "OpenSans");
 }
 
 TextStyle timeStyle() {
-  return TextStyle(color: darkColor);
+  return TextStyle(color: darkColor, fontSize: 12.0, fontFamily: "OpenSans");
 }
 
 TextStyle repeatStyle() {
-  return TextStyle(color: darkColor);
+  return TextStyle(color: darkColor, fontSize: 14.0, fontFamily: "Montserrat");
 }
 
-Widget noteCard(Function()? onTap, QueryDocumentSnapshot doc) {
+Widget noteCard(Color color, Function()? onTap, QueryDocumentSnapshot doc) {
   return InkWell(
       onTap: onTap,
       child: Container(
           padding: const EdgeInsets.all(8.0),
           margin: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
-              color: Color(doc['type_color']).withOpacity(0.5),
-              borderRadius: BorderRadius.circular(8.0)),
+              color: color, borderRadius: BorderRadius.circular(8.0)),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(doc["note_title"], style: titleStyle()),
-            const SizedBox(height: 4.0),
-            Text(doc["note_description"], style: contentStyle()),
-            const SizedBox(height: 4.0),
-            Text(doc["note_location"], style: contentStyle()),
-            const SizedBox(height: 4.0),
-            Text(doc["note_repeat"], style: repeatStyle()),
-            const SizedBox(height: 4.0),
+            Text(doc["note_title"],
+                style: titleStyle(), overflow: TextOverflow.ellipsis),
+            const SizedBox(height: 2.0),
+            RichText(
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                text: TextSpan(style: contentStyle(), children: <TextSpan>[
+                  const TextSpan(
+                      text: "Description: ",
+                      style: TextStyle(fontFamily: "Montserrat")),
+                  TextSpan(text: doc["note_description"])
+                ])),
+            const SizedBox(height: 1.0),
+            RichText(
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                text: TextSpan(style: contentStyle(), children: <TextSpan>[
+                  const TextSpan(
+                      text: "Location: ",
+                      style: TextStyle(fontFamily: "Montserrat")),
+                  TextSpan(text: doc["note_location"])
+                ])),
+            const SizedBox(height: 1.0),
+            Text(doc["note_repeat"],
+                style: repeatStyle(), overflow: TextOverflow.ellipsis),
+            const SizedBox(height: 2.0),
             Text(
                 '${doc['time_start']} - ${doc['time_end']}  ${doc['note_date']}',
-                style: timeStyle()),
+                style: timeStyle())
           ])));
 }
