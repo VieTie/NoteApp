@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-const Color lightColor = const Color(0xFFEDF4F6);
+const Color lightColor = Color(0xFFEDF4F6);
 Color darkColor = const Color(0xFF1C1F20);
 Color lessDarkColor = const Color(0xFFD9D9D9);
 const Color btnColor = Color.fromARGB(255, 7, 164, 216);
@@ -11,6 +11,7 @@ Color lightestMainColor = const Color(0x4D0798C9);
 Color lightTextColor = const Color(0xBF1C1F20);
 const appDefaultPadding = 8.0;
 
+FirebaseFirestore firestore = FirebaseFirestore.instance;
 CollectionReference notes = FirebaseFirestore.instance.collection('Notes');
 CollectionReference types = FirebaseFirestore.instance.collection('Types');
 
@@ -30,8 +31,9 @@ AppBar theAppBar(String title) {
 }
 
 // The FloatingActionButton to add new note
-FloatingActionButton theFAB() {
+FloatingActionButton theFAB(Function()? onPress) {
   return FloatingActionButton(
+      onPressed: onPress,
       child: Container(
           width: 80,
           height: 80,
@@ -46,8 +48,7 @@ FloatingActionButton theFAB() {
                     mainColor
                   ],
                   tileMode: TileMode.mirror)),
-          child: const Icon(Icons.add, size: 40, color: lightColor)),
-      onPressed: () {});
+          child: const Icon(Icons.add, size: 40, color: lightColor)));
 }
 
 // Icon used in drawer
