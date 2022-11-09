@@ -1,43 +1,64 @@
 //import 'dart:html';
 
+import 'dart:developer' as developer;
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:noteapp/ui/style/addNote_style.dart';
 import 'package:noteapp/ui/style/app.dart';
-import 'package:noteapp/ui/style/home_style.dart';
+//import 'package:noteapp/ui/style/home_style.dart';
 
 class AddNote extends StatefulWidget {
-  const AddNote({Key? key}) : super(key: key);
-
+  const AddNote({super.key, this.restorationId});
+  final String? restorationId;
   @override
   State<StatefulWidget> createState() => _addNoteState();
 }
 
 class _addNoteState extends State<AddNote> {
-  Color colorChange = btnColor;
-  Color buttonColor = Colors.white;
+  //Color colorChange = btnColor;
+  Color buttonColor = btnColor;
   Color textChange = Colors.white;
-  Color textColor = darkColor;
-  void _changeColor() {
-    setState(() {
-      buttonColor = colorChange;
-      textColor = textChange;
+  //Color textColor = darkColor;
+  DateTime _selectedDate = DateTime.now();
+  // void _changeColor() {
+  //   setState(() {
+  //     buttonColor = colorChange;
+  //     textColor = textChange;
+  //   });
+  // }
+
+  void _presentDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime.now(),
+            lastDate: DateTime(2025))
+        .then((pickedDate) {
+      if (pickedDate == null) return;
+      setState(() {
+        _selectedDate = pickedDate;
+      });
     });
+    print("Show Date Picker");
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 8),
       child: Scaffold(
         backgroundColor: lightColor,
         appBar: noteAppBar(),
         body: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 0),
+            margin: const EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 8),
             child: Column(
               children: [
-                TextField(
+                const TextField(
                   style: TextStyle(
                     fontSize: 24,
                     fontFamily: 'Montserrat',
@@ -67,18 +88,24 @@ class _addNoteState extends State<AddNote> {
                                 NoteButton(
                                   text: "Home",
                                   press: () {
-                                    _changeColor;
+                                    // _changeColor;
                                   },
-                                  textcolor: Colors.white,
-                                  color: buttonColor,
+                                  textcolor: btnColor,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 5,
                                 ),
                                 NoteButton(
                                   text: "Shopping",
                                   press: () {
-                                    _changeColor;
+                                    // _changeColor;
                                   },
-                                  textcolor: textColor,
-                                  color: buttonColor,
+                                  textcolor: btnColor,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 5,
                                 ),
                                 NoteButton(
                                   text: "Work",
@@ -86,11 +113,17 @@ class _addNoteState extends State<AddNote> {
                                   textcolor: btnColor,
                                   color: Colors.white,
                                 ),
+                                SizedBox(
+                                  width: 5,
+                                ),
                                 NoteButton(
                                   text: "Sport",
                                   press: () {},
                                   textcolor: btnColor,
                                   color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 5,
                                 ),
                                 NoteButton(
                                   text: "Jobs",
@@ -103,16 +136,18 @@ class _addNoteState extends State<AddNote> {
                           ),
                         ),
                         SizedBox(
-                          width: 50,
+                          width: 40,
                           child: FlatButton(
                               onPressed: () {},
                               padding: EdgeInsets.only(left: 0),
                               child: Icon(Icons.add_circle,
-                                  color: lighterMainColor, size: 38)),
+                                  color: btnColor, size: 40)),
                         ),
                       ]),
                 ),
-                // /Spacer(),
+                SizedBox(
+                  height: 25,
+                ),
                 Container(
                   decoration: const BoxDecoration(
                       color: Colors.white,
@@ -137,25 +172,30 @@ class _addNoteState extends State<AddNote> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(24)))),
                         ),
-                        //padding: EdgeInsets.only(left: 0),
-                        onPressed: () {},
+                        onPressed: () {
+                          _presentDatePicker();
+                        },
                         icon: Icon(
                           Icons.edit_calendar,
                           size: 35,
                           color: btnColor,
                         ),
                         label: Text(
-                          "17 Monday 2022",
+                          _selectedDate == null
+                              ? 'No Date Chosen!'
+                              : DateFormat.yMd().format(_selectedDate),
                           style: TextStyle(
                               color: btnColor,
-                              fontSize: 27,
+                              fontSize: 25,
                               fontFamily: "Montserrat"),
                         ),
                       )
                     ],
                   ),
                 ),
-                //Spacer(),
+                SizedBox(
+                  height: 25,
+                ),
                 Container(
                   height: 220,
                   decoration: const BoxDecoration(
@@ -169,9 +209,17 @@ class _addNoteState extends State<AddNote> {
                         NoteTimePicker("End"),
                       ]),
                 ),
-                //Spacer(),
+                SizedBox(
+                  height: 25,
+                ),
                 NoteInputText("Decription", listnote),
+                SizedBox(
+                  height: 20,
+                ),
                 NoteInputText("Repeat", looptime),
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
           ),

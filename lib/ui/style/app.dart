@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 const Color lightColor = const Color(0xFFEDF4F6);
 Color darkColor = const Color(0xFF1C1F20);
 Color lessDarkColor = const Color(0xFFD9D9D9);
-Color btnColor = const Color(0xFF0798C9);
+const Color btnColor = Color.fromARGB(255, 7, 164, 216);
 Color mainColor = const Color(0xFF0798C9);
 Color lighterMainColor = const Color(0xBF0798C9);
 Color lightestMainColor = const Color(0x4D0798C9);

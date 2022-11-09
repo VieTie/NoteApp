@@ -28,11 +28,11 @@ class NoteButton extends StatelessWidget {
       height: 40,
       onPressed: press,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(40)),
       ),
       //padding: padding,
       color: color,
-      //textColor: textcolor,
+      textColor: textcolor,
       //minWidth: double.infinity,
       child: Text(
         text,
@@ -53,6 +53,7 @@ Icon looptime = Icon(
 
 AppBar noteAppBar() {
   return AppBar(
+    toolbarHeight: 40,
     elevation: 0.0,
     // leadingWidth: double.maxFinite,
     backgroundColor: lightColor,
@@ -62,7 +63,7 @@ AppBar noteAppBar() {
           onPressed: () {},
           icon: const Icon(Icons.close),
           color: btnColor,
-          iconSize: 40,
+          iconSize: 25,
         );
       },
     ),
@@ -70,13 +71,13 @@ AppBar noteAppBar() {
       Container(
         margin: EdgeInsets.only(right: 16.0),
         child: ButtonTheme(
-          height: 40,
-          minWidth: 40,
+          height: 20,
+          minWidth: 20,
           child: NoteButton(
             text: "Save",
             press: () {},
-            textcolor: Colors.white,
-            color: btnColor,
+            textcolor: btnColor,
+            color: Colors.white,
           ),
         ),
       )
