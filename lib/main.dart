@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //return const MaterialApp(home: Home());
-    return const MaterialApp(home: AddNote());
+    return const MaterialApp(home: Home());
+    //return const MaterialApp(home: AddNote());
   }
 }

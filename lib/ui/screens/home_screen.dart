@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:noteapp/ui/custom_drawer.dart';
+import 'package:noteapp/ui/style/type_style.dart';
 
 import '../custom_tab_view.dart';
 import '../style/app.dart';
@@ -32,12 +33,15 @@ class _HomeState extends State<Home> {
 
             ///TabController
             child: StreamBuilder<QuerySnapshot>(
-                stream: types
-                    .orderBy('created_time', descending: true)
-                    .snapshots(),
+                stream:
+                    types.orderBy('created_time', descending: true).snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+                    return addNewType(context);
                   }
                   return CustomTabView(
                       initPosition: initPosition,
@@ -46,46 +50,46 @@ class _HomeState extends State<Home> {
                           Tab(text: snapshot.data!.docs[index]['type_name']),
 
                       ///TabView
-                      pageBuilder: (context, index) => StreamBuilder<
-                              QuerySnapshot>(
-                          stream: notes
-                              .where("note_type",
-                                  isEqualTo: snapshot.data!.docs[index]
-                                      ['type_name'])
-                              .snapshots(),
-                          builder: (ctx, snapshot2) {
-                            if (snapshot2.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                            if (!snapshot2.hasData) {
-                              return Text(
-                                "There's no Notes",
-                                style:
-                                    TextStyle(color: darkColor, fontSize: 16.0),
-                              );
-                            }
-                            Color color =
-                                Color(snapshot.data!.docs[index]['type_color'])
-                                    .withOpacity(0.5);
-                            return GridView(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2),
-                                children: snapshot2.data!.docs
-                                    .map((note) => noteCard(color, () {
-                                          Navigator.push(
-                                              ctx,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      NoteReader(note)));
-                                        }, note))
-                                    .toList());
-                          }),
-                      onPositionChange: (index) {
-                        initPosition = index;
-                      });
+                      pageBuilder: (context, index) =>
+                          StreamBuilder<QuerySnapshot>(
+                              stream: notes
+                                  .where("note_type",
+                                      isEqualTo: snapshot.data!.docs[index]
+                                          ['type_name'])
+                                  .snapshots(),
+                              builder: (ctx,
+                                  AsyncSnapshot<QuerySnapshot> snapshot2) {
+                                if (!snapshot2.hasData) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                                if (snapshot2.data == null ||
+                                    snapshot2.data!.docs.isEmpty) {
+                                  return Center(
+                                      child: Text("There's no Notes",
+                                          style: TextStyle(
+                                              color: mainColor,
+                                              fontSize: 40.0)));
+                                }
+
+                                return GridView(
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2),
+                                    children: snapshot2.data!.docs
+                                        .map((note) => noteCard(
+                                                Color(snapshot.data!.docs[index]
+                                                        ['type_color'])
+                                                    .withOpacity(0.5), () {
+                                              Navigator.push(
+                                                  ctx,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          NoteReader(note)));
+                                            }, note))
+                                        .toList());
+                              }),
+                      onPositionChange: (index) => initPosition = index);
                 })));
   }
 }
