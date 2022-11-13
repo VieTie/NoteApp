@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 const Color lightColor = Color(0xFFEDF4F6);
 Color darkColor = const Color(0xFF1C1F20);
@@ -63,19 +64,19 @@ Text drawerTitle(String title) {
 }
 
 TextStyle titleStyle() {
-  return TextStyle(color: darkColor, fontSize: 16.0, fontFamily: "Montserrat");
+  return const TextStyle(color: lightColor, fontSize: 16.0, fontFamily: "Montserrat");
 }
 
 TextStyle contentStyle() {
-  return TextStyle(color: darkColor, fontSize: 14.0, fontFamily: "OpenSans");
+  return const TextStyle(color: lightColor, fontSize: 14.0, fontFamily: "OpenSans");
 }
 
 TextStyle timeStyle() {
-  return TextStyle(color: darkColor, fontSize: 12.0, fontFamily: "OpenSans");
+  return const TextStyle(color: lightColor, fontSize: 12.0, fontFamily: "OpenSans");
 }
 
 TextStyle repeatStyle() {
-  return TextStyle(color: darkColor, fontSize: 14.0, fontFamily: "Montserrat");
+  return const TextStyle(color: lightColor, fontSize: 14.0, fontFamily: "Montserrat");
 }
 
 Widget noteCard(Color color, Function()? onTap, QueryDocumentSnapshot doc) {
@@ -111,11 +112,14 @@ Widget noteCard(Color color, Function()? onTap, QueryDocumentSnapshot doc) {
                   TextSpan(text: doc["note_location"])
                 ])),
             const SizedBox(height: 1.0),
-            Text(doc["note_repeat"],
-                style: repeatStyle(), overflow: TextOverflow.ellipsis),
-            const SizedBox(height: 2.0),
-            Text(
-                '${doc['time_start']} - ${doc['time_end']}  ${doc['note_date']}',
-                style: timeStyle())
+            // Text(doc["note_repeat"],
+            //     style: repeatStyle(), overflow: TextOverflow.ellipsis),
+            // const SizedBox(height: 2.0),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Text(
+                  '${DateFormat.Hm().format(doc['time_start'].toDate())} - ${DateFormat.Hm().format(doc['time_end'].toDate())}  ${DateFormat.yMd().format(doc['note_date'].toDate())}',
+                  style: timeStyle()),
+            )
           ])));
 }

@@ -11,7 +11,7 @@ Widget btnCancel(BuildContext context) {
       onPressed: () {
         Navigator.pop(context);
       },
-      icon: const Icon(Icons.cancel_outlined, color: Colors.red, size: 32.0));
+      icon: const Icon(Icons.close, color: Colors.red, size: 32.0));
 }
 
 Widget title(String title) {

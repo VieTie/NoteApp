@@ -5,7 +5,7 @@ import 'package:noteapp/ui/style/type_style.dart';
 
 import '../custom_tab_view.dart';
 import '../style/app.dart';
-import 'addnote_screen.dart';
+import 'add_screen.dart';
 import 'note_reader.dart';
 
 class Home extends StatefulWidget {
@@ -79,8 +79,7 @@ class _HomeState extends State<Home> {
                                     children: snapshot2.data!.docs
                                         .map((note) => noteCard(
                                                 Color(snapshot.data!.docs[index]
-                                                        ['type_color'])
-                                                    .withOpacity(0.5), () {
+                                                        ['type_color']), () {
                                               Navigator.push(
                                                   ctx,
                                                   MaterialPageRoute(

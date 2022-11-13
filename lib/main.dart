@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:noteapp/ui/screens/addnote_screen.dart';
 import 'package:noteapp/ui/screens/home_screen.dart';
 
 Future<void> main() async {
@@ -15,6 +14,5 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(home: Home());
-    //return const MaterialApp(home: AddNote());
   }
 }

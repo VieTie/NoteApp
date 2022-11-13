@@ -45,6 +45,8 @@ dependencies:
   intl: ^0.17.0
 
   flutter_colorpicker: ^1.0.3
+  focusable_control_builder: ^0.1.0+4
+  table_calendar: ^3.0.8
 
 
 dev_dependencies:

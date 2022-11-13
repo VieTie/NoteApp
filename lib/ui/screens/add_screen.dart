@@ -8,36 +8,41 @@ import 'package:noteapp/ui/style/app.dart';
 import '../style/add_style.dart';
 import '../style/type_style.dart';
 
-class NoteReader extends StatefulWidget {
-  NoteReader(this.doc, {Key? key}) : super(key: key);
-  QueryDocumentSnapshot doc;
+class AddNote extends StatefulWidget {
+  const AddNote({super.key, this.restorationId});
+
+  final String? restorationId;
 
   @override
-  State<StatefulWidget> createState() => _NoteReader();
+  State<StatefulWidget> createState() => _AddNoteState();
 }
 
-class _NoteReader extends State<NoteReader> {
+class _AddNoteState extends State<AddNote> {
+  DateTime _selectedDate = DateTime.now();
+  late DateTime _startTime = DateTime.now();
+  late DateTime _endTime = DateTime.now();
+  String title = '';
+  String type = '';
+  String description = '';
+  String location = '';
   int _selectedIndex = 0;
+
+  void _presentDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: _selectedDate,
+            firstDate: DateTime.utc(2022),
+            lastDate: DateTime(2025))
+        .then((pickedDate) {
+      if (pickedDate == null) return;
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    DateTime selectedDate = widget.doc["note_date"].toDate();
-    late DateTime startTime = widget.doc["time_start"].toDate();
-    late DateTime endTime = widget.doc["time_end"].toDate();
-    String title = widget.doc["note_title"];
-    String type = widget.doc["note_type"];
-    String description = widget.doc["note_description"];
-    String location = widget.doc["note_location"];
-
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController decriptionCroller = TextEditingController();
-    final TextEditingController locationController = TextEditingController();
-    titleController.text = widget.doc["note_title"];
-    decriptionCroller.text = widget.doc["note_description"];
-    locationController.text = widget.doc["note_location"];
-
-    String oldTitle = title;
-
     return Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 8),
         child: Scaffold(
@@ -113,17 +118,15 @@ class _NoteReader extends State<NoteReader> {
                                         ]);
                                   });
                             } else {
-                              notes.doc(oldTitle).delete();
                               notes.doc(title).set({
                                 "note_title": title,
                                 "note_type": type,
-                                "note_date": selectedDate,
-                                "time_start": startTime,
-                                "time_end": endTime,
+                                "note_date": _selectedDate,
+                                "time_start": _startTime,
+                                "time_end": _endTime,
                                 "note_description": description,
                                 "note_location": location
                               });
-
                               Navigator.pop(context);
                             }
                           })))
@@ -133,7 +136,6 @@ class _NoteReader extends State<NoteReader> {
                     margin: const EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 8),
                     child: Column(children: [
                       TextField(
-                          controller: titleController,
                           textCapitalization: TextCapitalization.sentences,
                           textInputAction: TextInputAction.done,
                           keyboardType: TextInputType.text,
@@ -177,8 +179,7 @@ class _NoteReader extends State<NoteReader> {
                                         separatorBuilder: (context, index) =>
                                             const SizedBox(width: 8.0),
                                         itemBuilder: (context, index) {
-                                          type = snapshot
-                                                  .data!.docs[_selectedIndex]
+                                          type = snapshot.data!.docs[_selectedIndex]
                                               ['type_name'];
                                           return Container(
                                             decoration: BoxDecoration(
@@ -193,10 +194,10 @@ class _NoteReader extends State<NoteReader> {
                                                 onPressed: () {
                                                   setState(() {
                                                     _selectedIndex = index;
-                                                    type = snapshot.data!.docs[
-                                                            _selectedIndex]
-                                                        ['type_name'];
+                                                    type = snapshot.data!.docs[_selectedIndex]
+                                                    ['type_name'];
                                                   });
+
                                                 },
                                                 child: Text(
                                                     snapshot.data!.docs[index]
@@ -235,21 +236,11 @@ class _NoteReader extends State<NoteReader> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(24))))),
                           onPressed: () {
-                            showDatePicker(
-                                    context: context,
-                                    initialDate: selectedDate,
-                                    firstDate: DateTime.utc(2022),
-                                    lastDate: DateTime(2025))
-                                .then((pickedDate) {
-                              if (pickedDate == null) return;
-                              setState(() {
-                                selectedDate = pickedDate;
-                              });
-                            });
+                            _presentDatePicker();
                           },
                           icon: const Icon(Icons.edit_calendar,
                               size: 35, color: btnColor),
-                          label: Text(DateFormat.yMMMMd('en_Us').format(selectedDate),
+                          label: Text(DateFormat.yMMMMd('en_Us').format(_selectedDate),
                               style: const TextStyle(
                                   color: btnColor,
                                   fontSize: 25,
@@ -290,10 +281,10 @@ class _NoteReader extends State<NoteReader> {
                                                         CupertinoDatePickerMode
                                                             .time,
                                                     onDateTimeChanged: (value) {
-                                                      startTime = value;
+                                                      _startTime = value;
                                                     },
                                                     initialDateTime:
-                                                        startTime)))
+                                                        _startTime)))
                                       ]))
                                 ]),
                                 Column(children: [
@@ -321,16 +312,15 @@ class _NoteReader extends State<NoteReader> {
                                                         CupertinoDatePickerMode
                                                             .time,
                                                     onDateTimeChanged: (value) {
-                                                      endTime = value;
+                                                      _endTime = value;
                                                     },
-                                                    initialDateTime: endTime)))
+                                                    initialDateTime: _endTime)))
                                       ]))
                                 ])
                                 // noteTimePicker("End", _endTime)
                               ])),
                       const SizedBox(height: 25),
                       TextField(
-                          controller: decriptionCroller,
                           textCapitalization: TextCapitalization.sentences,
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
@@ -352,7 +342,6 @@ class _NoteReader extends State<NoteReader> {
                           }),
                       const SizedBox(height: 20),
                       TextField(
-                          controller: locationController,
                           textCapitalization: TextCapitalization.sentences,
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
