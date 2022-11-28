@@ -56,6 +56,10 @@ class _HomeState extends State<Home> {
                                   .where("note_type",
                                       isEqualTo: snapshot.data!.docs[index]
                                           ['type_name'])
+                                  .where("is_deleted", isEqualTo: false)
+                                  .where("is_completed", isEqualTo: false)
+                                  //.orderBy("note_date")
+                                  //.orderBy("time_start")
                                   .snapshots(),
                               builder: (ctx,
                                   AsyncSnapshot<QuerySnapshot> snapshot2) {
@@ -79,7 +83,7 @@ class _HomeState extends State<Home> {
                                     children: snapshot2.data!.docs
                                         .map((note) => noteCard(
                                                 Color(snapshot.data!.docs[index]
-                                                        ['type_color']), () {
+                                                    ['type_color']), () {
                                               Navigator.push(
                                                   ctx,
                                                   MaterialPageRoute(

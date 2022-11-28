@@ -18,10 +18,11 @@ class NoteReader extends StatefulWidget {
 
 class _NoteReader extends State<NoteReader> {
   int _selectedIndex = 0;
+  late DateTime selectedDate = widget.doc["note_date"].toDate();
 
   @override
   Widget build(BuildContext context) {
-    DateTime selectedDate = widget.doc["note_date"].toDate();
+    //selectedDate = widget.doc["note_date"].toDate();
     late DateTime startTime = widget.doc["time_start"].toDate();
     late DateTime endTime = widget.doc["time_end"].toDate();
     String title = widget.doc["note_title"];
@@ -30,10 +31,10 @@ class _NoteReader extends State<NoteReader> {
     String location = widget.doc["note_location"];
 
     final TextEditingController titleController = TextEditingController();
-    final TextEditingController decriptionCroller = TextEditingController();
+    final TextEditingController descriptionCroller = TextEditingController();
     final TextEditingController locationController = TextEditingController();
     titleController.text = widget.doc["note_title"];
-    decriptionCroller.text = widget.doc["note_description"];
+    descriptionCroller.text = widget.doc["note_description"];
     locationController.text = widget.doc["note_location"];
 
     String oldTitle = title;
@@ -56,6 +57,29 @@ class _NoteReader extends State<NoteReader> {
                       iconSize: 32);
                 }),
                 actions: <Widget>[
+                  Container(
+                      margin: const EdgeInsets.only(right: 16.0),
+                      child: ButtonTheme(
+                          height: 20,
+                          minWidth: 20,
+                          child: noteButton("Delete", () {
+                            notes.doc(oldTitle).update({
+                              "is_deleted": true,
+                            });
+                            Navigator.pop(context);
+                          }))),
+                  Container(
+                      margin: const EdgeInsets.only(right: 16.0),
+                      child: ButtonTheme(
+                          height: 20,
+                          minWidth: 20,
+                          child: noteButton("Done", () {
+                            notes.doc(oldTitle).update({
+                              "is_completed": true,
+                            });
+                            Navigator.pop(context);
+                          }))),
+                  //const SizedBox(width: 20.0),
                   Container(
                       margin: const EdgeInsets.only(right: 16.0),
                       child: ButtonTheme(
@@ -177,9 +201,20 @@ class _NoteReader extends State<NoteReader> {
                                         separatorBuilder: (context, index) =>
                                             const SizedBox(width: 8.0),
                                         itemBuilder: (context, index) {
-                                          type = snapshot
-                                                  .data!.docs[_selectedIndex]
-                                              ['type_name'];
+                                          ['type_name'];
+                                          for (int i = 0;
+                                              i < snapshot.data!.docs.length;
+                                              i++) {
+                                            if (snapshot.data!.docs[i]
+                                                    ['type_name'] ==
+                                                type) {
+                                              // index = i;
+                                              _selectedIndex = i;
+                                              type = snapshot.data!
+                                                      .docs[_selectedIndex]
+                                                  ['type_name'];
+                                            }
+                                          }
                                           return Container(
                                             decoration: BoxDecoration(
                                                 borderRadius:
@@ -330,7 +365,7 @@ class _NoteReader extends State<NoteReader> {
                               ])),
                       const SizedBox(height: 25),
                       TextField(
-                          controller: decriptionCroller,
+                          controller: descriptionCroller,
                           textCapitalization: TextCapitalization.sentences,
                           keyboardType: TextInputType.multiline,
                           maxLines: null,

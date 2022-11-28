@@ -31,7 +31,7 @@ class _AddNoteState extends State<AddNote> {
     showDatePicker(
             context: context,
             initialDate: _selectedDate,
-            firstDate: DateTime.utc(2022),
+            firstDate: DateTime.now(),
             lastDate: DateTime(2025))
         .then((pickedDate) {
       if (pickedDate == null) return;
@@ -125,7 +125,9 @@ class _AddNoteState extends State<AddNote> {
                                 "time_start": _startTime,
                                 "time_end": _endTime,
                                 "note_description": description,
-                                "note_location": location
+                                "note_location": location,
+                                "is_completed": false,
+                                "is_deleted": false,
                               });
                               Navigator.pop(context);
                             }
