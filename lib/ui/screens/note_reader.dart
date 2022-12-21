@@ -219,9 +219,10 @@ class _NoteReader extends State<NoteReader> {
                                           separatorBuilder: (context, index) =>
                                               const SizedBox(width: 8.0),
                                           itemBuilder: (context, index) {
-                                            type = snapshot
-                                                .data!.docs[_selectedIndex]
-                                            ['type_name'];
+                                            // type = snapshot
+                                            //     .data!.docs[_selectedIndex]
+                                            // ['type_name'];
+
                                             return Container(
                                                 decoration: BoxDecoration(
                                                     borderRadius:
@@ -323,7 +324,7 @@ class _NoteReader extends State<NoteReader> {
                                                                     'Montserrat'))),
                                                 child: CupertinoDatePicker(
                                                     use24hFormat: true,
-                                                    minimumDate: DateTime.now(),
+                                                  //  minimumDate: DateTime.now().add(const Duration(minutes: -1)),
                                                     mode:
                                                         CupertinoDatePickerMode
                                                             .time,
@@ -355,7 +356,7 @@ class _NoteReader extends State<NoteReader> {
                                                                     'Montserrat'))),
                                                 child: CupertinoDatePicker(
                                                     use24hFormat: true,
-                                                    minimumDate: startTime,
+                                                    //minimumDate: startTime.add(const Duration(minutes: -1)),
                                                     mode:
                                                         CupertinoDatePickerMode
                                                             .time,

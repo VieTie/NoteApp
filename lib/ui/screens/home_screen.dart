@@ -53,13 +53,13 @@ class _HomeState extends State<Home> {
                       pageBuilder: (context, index) =>
                           StreamBuilder<QuerySnapshot>(
                               stream: notes
-                                  .where("note_type",
+                                  .where('note_type',
                                       isEqualTo: snapshot.data!.docs[index]
                                           ['type_name'])
-                                  .where("is_deleted", isEqualTo: false)
-                                  .where("is_completed", isEqualTo: false)
-                                  .orderBy('note_date')
-                                  .orderBy("time_start")
+                                  .where('is_deleted', isEqualTo: false)
+                                  .where('is_completed', isEqualTo: false)
+                                  .orderBy('note_date', descending: false)
+                                  .orderBy('time_start', descending: false)
                                   .snapshots(),
                               builder: (ctx,
                                   AsyncSnapshot<QuerySnapshot> snapshot2) {
