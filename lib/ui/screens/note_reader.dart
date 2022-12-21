@@ -136,6 +136,22 @@ class _NoteReader extends State<NoteReader> {
                                               child: const Text('OK'))
                                         ]);
                                   });
+                            }
+                            if (startTime.isAfter(endTime)) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                        title: const Text('Time'),
+                                        content: const Text(
+                                            'Please check time of event'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: const Text('OK'))
+                                        ]);
+                                  });
                             } else {
                               notes.doc(oldTitle).delete();
                               notes.doc(title).set({
@@ -145,7 +161,9 @@ class _NoteReader extends State<NoteReader> {
                                 "time_start": startTime,
                                 "time_end": endTime,
                                 "note_description": description,
-                                "note_location": location
+                                "note_location": location,
+                                "is_completed": false,
+                                "is_deleted": false
                               });
 
                               Navigator.pop(context);
@@ -187,77 +205,61 @@ class _NoteReader extends State<NoteReader> {
                               return addNewType(context);
                             }
                             return Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                    height: 42.0,
-                                    width: MediaQuery.of(context).size.width -
-                                        100.0,
-                                    child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: snapshot.data!.docs.length,
-                                        separatorBuilder: (context, index) =>
-                                            const SizedBox(width: 8.0),
-                                        itemBuilder: (context, index) {
-                                          ['type_name'];
-                                          for (int i = 0;
-                                              i < snapshot.data!.docs.length;
-                                              i++) {
-                                            if (snapshot.data!.docs[i]
-                                                    ['type_name'] ==
-                                                type) {
-                                              // index = i;
-                                              _selectedIndex = i;
-                                              type = snapshot.data!
-                                                      .docs[_selectedIndex]
-                                                  ['type_name'];
-                                            }
-                                          }
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(24),
-                                                color: _selectedIndex == index
-                                                    ? Color(snapshot
-                                                            .data!.docs[index]
-                                                        ['type_color'])
-                                                    : Colors.white),
-                                            child: TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    _selectedIndex = index;
-                                                    type = snapshot.data!.docs[
-                                                            _selectedIndex]
-                                                        ['type_name'];
-                                                  });
-                                                },
-                                                child: Text(
-                                                    snapshot.data!.docs[index]
-                                                        ['type_name'],
-                                                    style: TextStyle(
-                                                        color: _selectedIndex ==
-                                                                index
-                                                            ? lightColor
-                                                            : mainColor,
-                                                        fontSize:
-                                                            _selectedIndex ==
-                                                                    index
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                      height: 42.0,
+                                      width: MediaQuery.of(context).size.width -
+                                          100.0,
+                                      child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: snapshot.data!.docs.length,
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(width: 8.0),
+                                          itemBuilder: (context, index) {
+                                            type = snapshot
+                                                .data!.docs[_selectedIndex]
+                                            ['type_name'];
+                                            return Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            24),
+                                                    color: _selectedIndex == index
+                                                        ? Color(snapshot.data!.docs[index]
+                                                            ['type_color'])
+                                                        : Colors.white),
+                                                child: TextButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _selectedIndex = index;
+                                                        type = snapshot
+                                                                    .data!.docs[
+                                                                _selectedIndex]
+                                                            ['type_name'];
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                        snapshot.data!.docs[index]
+                                                            ['type_name'],
+                                                        style: TextStyle(
+                                                            color: _selectedIndex == index
+                                                                ? lightColor
+                                                                : mainColor,
+                                                            fontSize: _selectedIndex == index
                                                                 ? 24.0
                                                                 : 22.0,
-                                                        fontFamily:
-                                                            "Montserrat"))),
-                                          );
-                                        })),
-                                IconButton(
-                                    onPressed: () {
-                                      addType(context);
-                                    },
-                                    icon: Icon(Icons.add_circle,
-                                        color: mainColor, size: 40.0))
-                              ],
-                            );
+                                                            fontFamily: "Montserrat"))));
+                                          })),
+                                  IconButton(
+                                      onPressed: () {
+                                        addType(context);
+                                      },
+                                      icon: Icon(Icons.add_circle,
+                                          color: mainColor, size: 40.0))
+                                ]);
                           }),
                       const SizedBox(height: 16.0),
                       ElevatedButton.icon(
@@ -273,7 +275,7 @@ class _NoteReader extends State<NoteReader> {
                             showDatePicker(
                                     context: context,
                                     initialDate: selectedDate,
-                                    firstDate: DateTime.utc(2022),
+                                    firstDate: DateTime.now(),
                                     lastDate: DateTime(2025))
                                 .then((pickedDate) {
                               if (pickedDate == null) return;
@@ -321,6 +323,7 @@ class _NoteReader extends State<NoteReader> {
                                                                     'Montserrat'))),
                                                 child: CupertinoDatePicker(
                                                     use24hFormat: true,
+                                                    minimumDate: DateTime.now(),
                                                     mode:
                                                         CupertinoDatePickerMode
                                                             .time,
@@ -352,6 +355,7 @@ class _NoteReader extends State<NoteReader> {
                                                                     'Montserrat'))),
                                                 child: CupertinoDatePicker(
                                                     use24hFormat: true,
+                                                    minimumDate: startTime,
                                                     mode:
                                                         CupertinoDatePickerMode
                                                             .time,

@@ -58,8 +58,8 @@ class _HomeState extends State<Home> {
                                           ['type_name'])
                                   .where("is_deleted", isEqualTo: false)
                                   .where("is_completed", isEqualTo: false)
-                                  //.orderBy("note_date")
-                                  //.orderBy("time_start")
+                                  .orderBy('note_date')
+                                  .orderBy("time_start")
                                   .snapshots(),
                               builder: (ctx,
                                   AsyncSnapshot<QuerySnapshot> snapshot2) {

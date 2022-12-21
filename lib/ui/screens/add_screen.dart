@@ -117,6 +117,21 @@ class _AddNoteState extends State<AddNote> {
                                               child: const Text('OK'))
                                         ]);
                                   });
+                            } else if (_startTime.isAfter(_endTime)) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                        title: const Text('Time'),
+                                        content: const Text(
+                                            'Please check time of event'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: const Text('OK'))
+                                        ]);
+                                  });
                             } else {
                               notes.doc(title).set({
                                 "note_title": title,
@@ -167,65 +182,61 @@ class _AddNoteState extends State<AddNote> {
                               return addNewType(context);
                             }
                             return Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                    height: 42.0,
-                                    width: MediaQuery.of(context).size.width -
-                                        100.0,
-                                    child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: snapshot.data!.docs.length,
-                                        separatorBuilder: (context, index) =>
-                                            const SizedBox(width: 8.0),
-                                        itemBuilder: (context, index) {
-                                          type = snapshot.data!.docs[_selectedIndex]
-                                              ['type_name'];
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(24),
-                                                color: _selectedIndex == index
-                                                    ? Color(snapshot
-                                                            .data!.docs[index]
-                                                        ['type_color'])
-                                                    : Colors.white),
-                                            child: TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    _selectedIndex = index;
-                                                    type = snapshot.data!.docs[_selectedIndex]
-                                                    ['type_name'];
-                                                  });
-
-                                                },
-                                                child: Text(
-                                                    snapshot.data!.docs[index]
-                                                        ['type_name'],
-                                                    style: TextStyle(
-                                                        color: _selectedIndex ==
-                                                                index
-                                                            ? lightColor
-                                                            : mainColor,
-                                                        fontSize:
-                                                            _selectedIndex ==
-                                                                    index
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                      height: 42.0,
+                                      width: MediaQuery.of(context).size.width -
+                                          100.0,
+                                      child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: snapshot.data!.docs.length,
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(width: 8.0),
+                                          itemBuilder: (context, index) {
+                                            type = snapshot
+                                                    .data!.docs[_selectedIndex]
+                                                ['type_name'];
+                                            return Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            24),
+                                                    color: _selectedIndex == index
+                                                        ? Color(snapshot.data!.docs[index]
+                                                            ['type_color'])
+                                                        : Colors.white),
+                                                child: TextButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _selectedIndex = index;
+                                                        type = snapshot
+                                                                    .data!.docs[
+                                                                _selectedIndex]
+                                                            ['type_name'];
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                        snapshot.data!.docs[index]
+                                                            ['type_name'],
+                                                        style: TextStyle(
+                                                            color: _selectedIndex == index
+                                                                ? lightColor
+                                                                : mainColor,
+                                                            fontSize: _selectedIndex == index
                                                                 ? 24.0
                                                                 : 22.0,
-                                                        fontFamily:
-                                                            "Montserrat"))),
-                                          );
-                                        })),
-                                IconButton(
-                                    onPressed: () {
-                                      addType(context);
-                                    },
-                                    icon: Icon(Icons.add_circle,
-                                        color: mainColor, size: 40.0))
-                              ],
-                            );
+                                                            fontFamily: "Montserrat"))));
+                                          })),
+                                  IconButton(
+                                      onPressed: () {
+                                        addType(context);
+                                      },
+                                      icon: Icon(Icons.add_circle,
+                                          color: mainColor, size: 40.0))
+                                ]);
                           }),
                       const SizedBox(height: 16.0),
                       ElevatedButton.icon(
@@ -279,6 +290,7 @@ class _AddNoteState extends State<AddNote> {
                                                                     'Montserrat'))),
                                                 child: CupertinoDatePicker(
                                                     use24hFormat: true,
+                                                    minimumDate: DateTime.now(),
                                                     mode:
                                                         CupertinoDatePickerMode
                                                             .time,
@@ -310,6 +322,7 @@ class _AddNoteState extends State<AddNote> {
                                                                     'Montserrat'))),
                                                 child: CupertinoDatePicker(
                                                     use24hFormat: true,
+                                                    minimumDate: _startTime,
                                                     mode:
                                                         CupertinoDatePickerMode
                                                             .time,
