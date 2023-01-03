@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 const Color lightColor = Color(0xFFEDF4F6);
 Color darkColor = const Color(0xFF1C1F20);
@@ -15,6 +16,11 @@ const appDefaultPadding = 8.0;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 CollectionReference notes = FirebaseFirestore.instance.collection('Notes');
 CollectionReference types = FirebaseFirestore.instance.collection('Types');
+
+FirebaseAuth auth = FirebaseAuth.instance;
+final uid = auth.currentUser?.uid;
+// CollectionReference notes = FirebaseFirestore.instance.collection('Notes').doc(uid) as CollectionReference<Object?>;
+// CollectionReference types = FirebaseFirestore.instance.collection('Types').doc(uid) as CollectionReference<Object?>;
 
 // The main AppBar
 AppBar theAppBar(String title) {
@@ -64,19 +70,23 @@ Text drawerTitle(String title) {
 }
 
 TextStyle titleStyle() {
-  return const TextStyle(color: lightColor, fontSize: 16.0, fontFamily: "Montserrat");
+  return const TextStyle(
+      color: lightColor, fontSize: 16.0, fontFamily: "Montserrat");
 }
 
 TextStyle contentStyle() {
-  return const TextStyle(color: lightColor, fontSize: 14.0, fontFamily: "OpenSans");
+  return const TextStyle(
+      color: lightColor, fontSize: 14.0, fontFamily: "OpenSans");
 }
 
 TextStyle timeStyle() {
-  return const TextStyle(color: lightColor, fontSize: 12.0, fontFamily: "OpenSans");
+  return const TextStyle(
+      color: lightColor, fontSize: 12.0, fontFamily: "OpenSans");
 }
 
 TextStyle repeatStyle() {
-  return const TextStyle(color: lightColor, fontSize: 14.0, fontFamily: "Montserrat");
+  return const TextStyle(
+      color: lightColor, fontSize: 14.0, fontFamily: "Montserrat");
 }
 
 Widget noteCard(Color color, Function()? onTap, QueryDocumentSnapshot doc) {
@@ -116,10 +126,9 @@ Widget noteCard(Color color, Function()? onTap, QueryDocumentSnapshot doc) {
             //     style: repeatStyle(), overflow: TextOverflow.ellipsis),
             // const SizedBox(height: 2.0),
             Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                  '${DateFormat.Hm().format(doc['time_start'].toDate())} - ${DateFormat.Hm().format(doc['time_end'].toDate())}  ${DateFormat.yMd().format(doc['note_date'].toDate())}',
-                  style: timeStyle()),
-            )
+                alignment: Alignment.bottomRight,
+                child: Text(
+                    '${DateFormat.Hm().format(doc['time_start'].toDate())} - ${DateFormat.Hm().format(doc['time_end'].toDate())}  ${DateFormat.yMd().format(doc['note_date'].toDate())}',
+                    style: timeStyle()))
           ])));
 }

@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
                                   .where('note_type',
                                       isEqualTo: snapshot.data!.docs[index]
                                           ['type_name'])
-                                  .where('is_deleted', isEqualTo: false)
+                                    .where('is_deleted', isEqualTo: false)
                                   .where('is_completed', isEqualTo: false)
                                   .orderBy('note_date', descending: false)
                                   .orderBy('time_start', descending: false)

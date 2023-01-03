@@ -147,14 +147,13 @@ Widget typeCard(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              width: 200.0,
-              child: Text(doc['type_name'],
-                  overflow: TextOverflow.fade,
-                  style: const TextStyle(
-                      fontFamily: "Montserrat",
-                      color: lightColor,
-                      fontSize: 20.0)),
-            ),
+                width: 200.0,
+                child: Text(doc['type_name'],
+                    overflow: TextOverflow.fade,
+                    style: const TextStyle(
+                        fontFamily: "Montserrat",
+                        color: lightColor,
+                        fontSize: 20.0))),
             Row(children: [
               ///Edit Type
               IconButton(
