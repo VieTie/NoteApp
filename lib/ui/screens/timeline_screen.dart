@@ -46,7 +46,7 @@ class _TimelineState extends State<Timeline> {
           stream: notes.snapshots(),
           builder: (context, snapshot) {
             return SfCalendar(
-              view: CalendarView.week,
+              view: CalendarView.day,
               // allowedViews: const [
               //   CalendarView.day,
               //   CalendarView.week,
@@ -88,9 +88,6 @@ class _TimelineState extends State<Timeline> {
       } else {
         _timeDetails = '$_startTimeText - $_endTimeText';
       }
-      List<QueryDocumentSnapshot> doc;
-      doc = notes.get().then((value) => value.docs.map((e) => null))
-          as List<QueryDocumentSnapshot<Object?>>;
       showDialog(
           context: context,
           builder: (BuildContext context) {

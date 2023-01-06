@@ -128,9 +128,19 @@ class _LoginState extends State<Login> {
                                         }
                                       } else {
                                         if (otpPin.length >= 6) {
-                                          final pref = await SharedPreferences.getInstance();
+                                          final pref = await SharedPreferences
+                                              .getInstance();
                                           pref.setBool('isLoggedIn', true);
                                           verifyOTP();
+
+                                          FirebaseAuth auth =
+                                              FirebaseAuth.instance;
+                                          final uid = auth.currentUser?.uid;
+                                          User1.static_uid = uid!;
+                                          users
+                                              .doc(uid)
+                                              .set({'uid': User1.static_uid});
+                                          print('UID: ${User1.static_uid}');
                                         } else {}
                                       }
                                     },
@@ -265,4 +275,9 @@ class _LoginState extends State<Login> {
         decoration:
             const BoxDecoration(shape: BoxShape.circle, color: Colors.white));
   }
+}
+
+class User1 {
+  static String static_uid = '';
+  User1();
 }

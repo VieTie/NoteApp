@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:noteapp/ui/screens/login_screen.dart';
 
 const Color lightColor = Color(0xFFEDF4F6);
 Color darkColor = const Color(0xFF1C1F20);
@@ -14,11 +15,15 @@ Color lightTextColor = const Color(0xBF1C1F20);
 const appDefaultPadding = 8.0;
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-CollectionReference notes = FirebaseFirestore.instance.collection('Notes');
-CollectionReference types = FirebaseFirestore.instance.collection('Types');
+
+CollectionReference users = FirebaseFirestore.instance.collection('Users');
+CollectionReference notes =
+    users.doc('${User1.static_uid}').collection('Notes');
+CollectionReference types =
+    users.doc('${User1.static_uid}').collection('Types');
 
 FirebaseAuth auth = FirebaseAuth.instance;
-final uid = auth.currentUser?.uid;
+
 // CollectionReference notes = FirebaseFirestore.instance.collection('Notes').doc(uid) as CollectionReference<Object?>;
 // CollectionReference types = FirebaseFirestore.instance.collection('Types').doc(uid) as CollectionReference<Object?>;
 
