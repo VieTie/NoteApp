@@ -76,12 +76,18 @@ TextStyle titleStyle() {
 
 TextStyle contentStyle() {
   return const TextStyle(
-      color: lightColor, fontSize: 14.0, fontFamily: "OpenSans");
+      color: lightColor,
+      fontSize: 16.0,
+      fontFamily: "OpenSans",
+      fontWeight: FontWeight.w200);
 }
 
 TextStyle timeStyle() {
   return const TextStyle(
-      color: lightColor, fontSize: 12.0, fontFamily: "OpenSans");
+      color: lightColor,
+      fontSize: 16.0,
+      fontFamily: "OpenSans",
+      fontWeight: FontWeight.w200);
 }
 
 TextStyle repeatStyle() {
@@ -92,43 +98,46 @@ TextStyle repeatStyle() {
 Widget noteCard(Color color, Function()? onTap, QueryDocumentSnapshot doc) {
   return InkWell(
       onTap: onTap,
-      child: Container(
-          padding: const EdgeInsets.all(8.0),
-          margin: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(8.0)),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(doc["note_title"],
-                style: titleStyle(), overflow: TextOverflow.ellipsis),
-            const SizedBox(height: 2.0),
-            RichText(
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-                text: TextSpan(style: contentStyle(), children: <TextSpan>[
-                  const TextSpan(
-                      text: "Description: ",
-                      style: TextStyle(fontFamily: "Montserrat")),
-                  TextSpan(text: doc["note_description"])
-                ])),
-            const SizedBox(height: 1.0),
-            RichText(
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                text: TextSpan(style: contentStyle(), children: <TextSpan>[
-                  const TextSpan(
-                      text: "Location: ",
-                      style: TextStyle(fontFamily: "Montserrat")),
-                  TextSpan(text: doc["note_location"])
-                ])),
-            const SizedBox(height: 1.0),
-            // Text(doc["note_repeat"],
-            //     style: repeatStyle(), overflow: TextOverflow.ellipsis),
-            // const SizedBox(height: 2.0),
-            Align(
+      child: SingleChildScrollView(
+        child: Container(
+            padding: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+                color: color, borderRadius: BorderRadius.circular(8.0)),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(doc["note_title"],
+                  style: titleStyle(), overflow: TextOverflow.ellipsis),
+              const SizedBox(height: 2.0),
+              RichText(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  text: TextSpan(style: contentStyle(), children: <TextSpan>[
+                    const TextSpan(
+                        text: "Description: ",
+                        style: TextStyle(fontFamily: "Montserrat")),
+                    TextSpan(text: doc["note_description"])
+                  ])),
+              const SizedBox(height: 1.0),
+              RichText(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  text: TextSpan(style: contentStyle(), children: <TextSpan>[
+                    const TextSpan(
+                        text: "Location: ",
+                        style: TextStyle(fontFamily: "Montserrat")),
+                    TextSpan(text: doc["note_location"])
+                  ])),
+              const SizedBox(height: 1.0),
+              // Text(doc["note_repeat"],
+              //     style: repeatStyle(), overflow: TextOverflow.ellipsis),
+              // const SizedBox(height: 2.0),
+              Align(
                 alignment: Alignment.bottomRight,
                 child: Text(
                     '${DateFormat.Hm().format(doc['time_start'].toDate())} - ${DateFormat.Hm().format(doc['time_end'].toDate())}  ${DateFormat.yMd().format(doc['note_date'].toDate())}',
-                    style: timeStyle()))
-          ])));
+                    style: timeStyle()),
+              )
+            ])),
+      ));
 }
