@@ -135,7 +135,7 @@ class _TimelineState extends State<Timeline> {
                 ),
               ),
               actions: <Widget>[
-                FlatButton(
+                ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

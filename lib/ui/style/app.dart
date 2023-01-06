@@ -18,9 +18,9 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 CollectionReference users = FirebaseFirestore.instance.collection('Users');
 CollectionReference notes =
-    users.doc('${User1.static_uid}').collection('Notes');
+    users.doc(User1.static_uid).collection('Notes');
 CollectionReference types =
-    users.doc('${User1.static_uid}').collection('Types');
+    users.doc(User1.static_uid).collection('Types');
 
 FirebaseAuth auth = FirebaseAuth.instance;
 

@@ -53,6 +53,8 @@ dependencies:
   intl_phone_field: ^3.1.0
   intl_phone_number_input: ^0.7.1
   firebase_messaging: ^14.2.1
+  flutter_local_notifications: ^13.0.0
+  rxdart: ^0.27.7
 
   syncfusion_flutter_calendar: ^20.4.38
 

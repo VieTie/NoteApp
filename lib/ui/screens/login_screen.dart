@@ -7,7 +7,7 @@ import 'package:noteapp/ui/style/app.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home_screen.dart';
 
 class Login extends StatefulWidget {
@@ -59,6 +59,12 @@ class _LoginState extends State<Login> {
         .signInWithCredential(PhoneAuthProvider.credential(
             verificationId: verID, smsCode: otpPin))
         .whenComplete(() {
+      final uid = auth.currentUser?.uid;
+      User1.static_uid = uid!;
+      users
+          .doc(auth.currentUser?.uid)
+          .set({'uid': uid});
+      print('UID: ${User1.static_uid}');
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const Home()));
     });
@@ -131,16 +137,8 @@ class _LoginState extends State<Login> {
                                           final pref = await SharedPreferences
                                               .getInstance();
                                           pref.setBool('isLoggedIn', true);
-                                          verifyOTP();
 
-                                          FirebaseAuth auth =
-                                              FirebaseAuth.instance;
-                                          final uid = auth.currentUser?.uid;
-                                          User1.static_uid = uid!;
-                                          users
-                                              .doc(uid)
-                                              .set({'uid': User1.static_uid});
-                                          print('UID: ${User1.static_uid}');
+                                          verifyOTP();
                                         } else {}
                                       }
                                     },

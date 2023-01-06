@@ -5,24 +5,20 @@ import 'package:noteapp/ui/screens/home_screen.dart';
 import 'package:noteapp/ui/screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:noteapp/ui/screens/timeline_screen.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final pref = await SharedPreferences.getInstance();
   final isLoggedIn = pref.getBool('isLoggedIn') ?? false;
-  var phone = pref.getString('phone');
   runApp(MyApp(isLoggedIn: isLoggedIn));
-  // home: Home()) );
 }
 
 class MyApp extends StatelessWidget {
   final bool isLoggedIn;
+
   const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(debugShowCheckedModeBanner: false, home: Login());
-  }
+  Widget build(BuildContext context) =>
+      MaterialApp(home: isLoggedIn ? const Home() : const Login());
 }
