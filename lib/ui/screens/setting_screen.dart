@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../custom_drawer.dart';
 import '../style/add_style.dart';
@@ -27,7 +28,9 @@ class _SettingState extends State<Setting> {
                   child: ButtonTheme(
                       height: 20,
                       minWidth: 20,
-                      child: noteButton("Sign Out", () {
+                      child: noteButton("Sign Out", () async {
+                        final pref = await SharedPreferences.getInstance();
+                        pref.setBool('isLoggedIn', false);
                         auth.signOut();
                         Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (context) => const Login()));

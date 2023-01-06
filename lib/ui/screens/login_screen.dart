@@ -6,6 +6,7 @@ import 'package:noteapp/ui/style/app.dart';
 
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_screen.dart';
 
@@ -116,7 +117,7 @@ class _LoginState extends State<Login> {
                               children: [
                                 screenState == 0 ? stateRegister() : stateOTP(),
                                 GestureDetector(
-                                    onTap: () {
+                                    onTap: () async {
                                       if (screenState == 0) {
                                         if (_phoneController.text.isEmpty) {
                                         } else {
@@ -127,6 +128,8 @@ class _LoginState extends State<Login> {
                                         }
                                       } else {
                                         if (otpPin.length >= 6) {
+                                          final pref = await SharedPreferences.getInstance();
+                                          pref.setBool('isLoggedIn', true);
                                           verifyOTP();
                                         } else {}
                                       }

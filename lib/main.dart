@@ -7,19 +7,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  SharedPreferences pref = await SharedPreferences.getInstance();
+  final pref = await SharedPreferences.getInstance();
+  final isLoggedIn = pref.getBool('isLoggedIn') ?? false;
   var phone = pref.getString('phone');
-  runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: phone == null ? const Login() : const Home()));
-      // home: Home()) );
+  runApp(MyApp(isLoggedIn: isLoggedIn));
+  // home: Home()) );
 }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const
-//   }
-// }
+class MyApp extends StatelessWidget {
+  final bool isLoggedIn;
+  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: isLoggedIn ? const Home() : const Login(),
+    );
+  }
+}
